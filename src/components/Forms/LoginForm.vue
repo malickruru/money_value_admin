@@ -38,6 +38,7 @@ export default {
                 this.$vaToast.init({ message: res.message, position: 'bottom-right', color: 'danger' })
             }else{
                 localStorage.setItem("moneyValueToken",res.data.token);
+                localStorage.setItem("moneyValueEmail",this.email);
                 this.$router.push("/")
             }
             this.isLoading = false

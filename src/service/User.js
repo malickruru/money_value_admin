@@ -18,12 +18,10 @@ async function logout(email) {
     var requestOptions = {
         method: 'GET',
         redirect: 'follow'
-      };
-      
-      fetch("http://127.0.0.1:8000/api/logout?email="+email, requestOptions)
-        .then(response => response.json())
-        .then(result => {return result})
-        .catch(error => console.log('error', error));
+    };
+
+    let response = await fetch("http://127.0.0.1:8000/api/logout?email="+email, requestOptions)
+    return response.json()
 }
 
 
