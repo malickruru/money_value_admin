@@ -26,9 +26,9 @@
             <RouterLink to="/" >
             <va-sidebar-item :active="isActive('/')" active-color="warning">
                 <va-sidebar-item-content>
-                    <va-icon name="home" />
+                    <va-icon name="currency_exchange" />
                     <va-sidebar-item-title>
-                        Home
+                        Conversion
                     </va-sidebar-item-title>
                 </va-sidebar-item-content>
             </va-sidebar-item>
@@ -45,7 +45,7 @@
             </va-sidebar-item>
         </RouterLink>
         </va-sidebar>
-        <div style="flex:1">
+        <div style="flex:1" class="va-bg--backgroundBorder">
             <RouterView />
         </div>
         
@@ -54,6 +54,8 @@
 <script>
 import { RouterLink } from 'vue-router';
 import { logout } from '../service/User';
+import { allCurrencies } from '../service/Currency';
+import { allPairs } from '../service/Pairs';
 
 export default {
     components: { RouterLink },
@@ -69,12 +71,15 @@ export default {
             return link == window.location.pathname
         },
 
-        logoutMethod(){
-            localStorage.removeItem('moneyValueToken')
-            logout(localStorage.getItem('moneyValueEmail'))
+        async logoutMethod(){
+            
+            await logout(localStorage.getItem('moneyValueEmail'))
+            localStorage.clear()
             this.$router.push('/login')
         }
     },
+
+    
 
 }
 </script>

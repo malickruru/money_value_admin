@@ -14,16 +14,16 @@ const router = createRouter({
         }
       },
       children: [
-        { path: '', component: () => import('../views/HomeView.vue') },
+        { path: '', component: () => import('../views/Conversion.vue') },
         {
           path: '/about',
           name: 'about',
           component: () => import('../views/AboutView.vue')
         },
         {
-          path: '/home',
-          name: 'home',
-          component: () => import('../views/HomeView.vue')
+          path: '/conversion',
+          name: 'conversion',
+          component: () => import('../views/Conversion.vue')
         },
       ]
     },
