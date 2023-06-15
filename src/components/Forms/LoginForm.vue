@@ -7,10 +7,9 @@
     <va-button @click="log" :loading="isLoading"> Connexion </va-button>
 </template>
 <script>
+import { allCurrencies, allPairs, login } from '../../service/Route'
 import Heading from '../Text/Heading.vue'
-import { login } from '../../service/User'
-import { allCurrencies } from '../../service/Currency'
-import { allPairs } from '../../service/Pairs'
+
 export default {
     components: {
         Heading,
@@ -25,18 +24,18 @@ export default {
     methods: {
         async log() {
             this.isLoading = true
-            let res = await login(this.email, this.password);
+            let res = await login.getResponse("",{"email" : this.email , "password" : this.password})
             if (res.status != 200) {
                 this.$vaToast.init({ message: res.message, position: 'bottom-right', color: 'danger' })
             } else {
                 localStorage.setItem("moneyValueToken", res.data.token);
                 localStorage.setItem("moneyValueEmail", this.email);
                 if (!localStorage.getItem("moneyValueCurrencies")) {
-                    let res = await allCurrencies();
+                    let res = await allCurrencies.getResponse();
                     localStorage.setItem("moneyValueCurrencies", JSON.stringify(res.data))
                 }
                 if (!localStorage.getItem("moneyValuePairs")) {
-                    let res = await allPairs();
+                    let res = await allPairs.getResponse();
                     localStorage.setItem("moneyValuePairs", JSON.stringify(res.data))
                 }
                 this.$router.push("/")

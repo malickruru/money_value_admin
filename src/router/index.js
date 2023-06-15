@@ -16,9 +16,9 @@ const router = createRouter({
       children: [
         { path: '', component: () => import('../views/Conversion.vue') },
         {
-          path: '/about',
-          name: 'about',
-          component: () => import('../views/AboutView.vue')
+          path: '/devise',
+          name: 'currency',
+          component: () => import('../views/CurrencyView.vue')
         },
         {
           path: '/conversion',

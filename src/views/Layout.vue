@@ -34,12 +34,12 @@
             </va-sidebar-item>
         </RouterLink>
 
-        <RouterLink to="/about" >
-            <va-sidebar-item :active="isActive('/about')" active-color="warning">
+        <RouterLink to="/devise" >
+            <va-sidebar-item :active="isActive('/devise')" active-color="warning">
                 <va-sidebar-item-content>
-                    <va-icon name="home" />
+                    <va-icon name="account_balance" />
                     <va-sidebar-item-title>
-                        About
+                        Devise
                     </va-sidebar-item-title>
                 </va-sidebar-item-content>
             </va-sidebar-item>
@@ -53,9 +53,9 @@
 </template>
 <script>
 import { RouterLink } from 'vue-router';
-import { logout } from '../service/User';
-import { allCurrencies } from '../service/Currency';
-import { allPairs } from '../service/Pairs';
+import { logout } from '../service/Route';
+
+
 
 export default {
     components: { RouterLink },
@@ -73,7 +73,7 @@ export default {
 
         async logoutMethod(){
             
-            await logout(localStorage.getItem('moneyValueEmail'))
+            await logout.getResponse(localStorage.getItem('moneyValueEmail'))
             localStorage.clear()
             this.$router.push('/login')
         }
