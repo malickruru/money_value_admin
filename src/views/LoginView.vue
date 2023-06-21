@@ -1,6 +1,6 @@
 <template>
   <!-- right -->
-  <div class="row">
+  <div class="container">
     <div class="hero flex-center flex-direction-column   ">
       <Heading level='1' _class="va-text--backgroundBorder ">
         Money Value
@@ -32,16 +32,25 @@ export default {
 </script>
 
 
-<style>
+<style scoped>
+
+.container{
+  display: grid; 
+  grid-template-columns: 60% 40%; 
+  grid-template-rows: 1fr; 
+  gap: 0px 0px; 
+  grid-template-areas: 
+    "hero login"; 
+}
 .hero {
   background: rgb(99, 82, 236);
   background: linear-gradient(153deg, rgba(99, 82, 236, 1) 21%, rgba(194, 105, 197, 1) 100%);
-  width: 60vw;
+  grid-area: hero;
   height: 100vh;
 }
 
 .login {
-  width: 40vw;
+  grid-area: login;
 }
 
 @media screen and (max-width : 768px) {

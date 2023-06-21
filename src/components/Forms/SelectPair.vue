@@ -28,6 +28,9 @@
             </div>
         </template>
     </va-select>
+  
+    <va-button v-show="(from != '') && (showClear )  " @click="from = '' "  color="danger" class="ml-3"> réintialiser </va-button>
+
 </template>
 <script>
 import Flag from '../Image/Flag.vue';
@@ -35,11 +38,12 @@ export default {
     components: {
         Flag,
     },
+    props : ['showClear','hasDefaultValue'],
     emits: ['setFrom', 'setTo'],
     data() {
         return {
-            to: 'Euro',
-            from: 'Franc CFA',
+            to: this.hasDefaultValue ?'Euro' : '',
+            from: this.hasDefaultValue ?  'Franc CFA' :'',
             currencies: JSON.parse(localStorage.getItem('moneyValueCurrencies')),
             pairs: JSON.parse(localStorage.getItem('moneyValuePairs')),
         }
@@ -50,9 +54,9 @@ export default {
         },
 
         codePairs() {
-            let match = this.pairs.filter(element => element.from == this.getCurrencyByName(this.from).code)
+            let match = this.pairs.filter(element => element.from.name == this.from)
             // return match
-            return match.map(element => this.getCurrencyByCode(element.to).name)
+            return match.map(element => element.to.name)
         },
     },
     watch:{

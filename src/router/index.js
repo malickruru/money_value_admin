@@ -1,39 +1,66 @@
 import { createRouter, createWebHistory } from 'vue-router'
+import {allCurrencies ,allPairs} from '../service/Route'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
     {
-      path: '/',
+      path: '/admin',
       name: 'admin',
-      alias: '/admin',
       component: import('../views/Layout.vue'),
-      beforeEnter: () => {
-        if(!localStorage.getItem('moneyValueToken')){
+      beforeEnter: (to, from, next) => {
+        if (!localStorage.getItem('moneyValueToken')) {
           router.push("/login")
+        }else{
+          next()
         }
       },
       children: [
-        { path: '', component: () => import('../views/Conversion.vue') },
+        { path: '', component: () => import('../views/CurrencyView/CurrencyView.vue') },
         {
-          path: '/devise',
+          path: '/admin/devise',
           name: 'currency',
-          component: () => import('../views/CurrencyView.vue')
+          component: () => import('../views/CurrencyView/CurrencyView.vue')
         },
         {
-          path: '/conversion',
-          name: 'conversion',
-          component: () => import('../views/Conversion.vue')
+          path: '/admin/pairs',
+          name: 'pairs',
+          component: () => import('../views/PairView/PairView.vue')
+        },
+        {
+          path: '/admin/statistics',
+          name: 'statistics',
+          component: () => import('../views/StatisticView.vue')
         },
       ]
     },
-
+    {
+      path: '/',
+      name: 'home',
+      component: () => import('../views/Conversion.vue')
+    },
     {
       path: '/login',
       name: 'login',
       component: () => import('../views/LoginView.vue')
     }
   ]
+
+})
+
+router.beforeEach( async (to, from, next) => {
+  if (!localStorage.getItem("moneyValueCurrencies")) {
+    let res = await allCurrencies.getResponse();
+    localStorage.setItem("moneyValueCurrencies", JSON.stringify(res.data))
+  }
+
+  if (!localStorage.getItem("moneyValuePairs")) {
+    let res = await allPairs.getResponse();
+    localStorage.setItem("moneyValuePairs", JSON.stringify(res.data))
+  }
+
+  next()
+
 })
 
 export default router

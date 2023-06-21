@@ -1,5 +1,5 @@
 <template >
-    <va-card style="width: 80%; margin: auto; transform: translateY(-25px);">
+    <va-card style="width: 60%; margin: auto; transform: translateY(-30%);">
         <va-card-title style="font-size:large; text-align: center;">Convertir {{ amount }} {{ from }} en {{ to }}
         </va-card-title>
         <va-card-content>
@@ -11,7 +11,7 @@
                     </template>
                 </va-input>
 
-                <SelectPair @setFrom="setFrom" @setTo="setTo" />
+                <SelectPair @setFrom="setFrom" @setTo="setTo" :hasDefaultValue="true" />
                 <!--  -->
             </div>
             <div class="row">
@@ -59,14 +59,9 @@ export default {
             // resultat de convertion
             operation: '',
             result: ''
-
         }
     },
-    mounted() {
-        // operationTag = this.$refs.operation
-        // resultTag = this.$refs.result
-        // console.log();
-    },
+    
 
     methods: {
         setFrom(v) {

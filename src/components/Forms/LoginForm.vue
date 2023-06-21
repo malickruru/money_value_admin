@@ -38,7 +38,7 @@ export default {
                     let res = await allPairs.getResponse();
                     localStorage.setItem("moneyValuePairs", JSON.stringify(res.data))
                 }
-                this.$router.push("/")
+                this.$router.push("/admin")
             }
             this.isLoading = false
         }

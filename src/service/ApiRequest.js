@@ -74,14 +74,25 @@ class Put extends ApiRequest {
     getHeaders(){
         let headers = new Headers();
         headers.append("Authorization", "Bearer " + localStorage.getItem("moneyValueToken"));
-        myHeaders.append("Content-Type", "application/x-www-form-urlencoded");
+        headers.append("Content-Type", "application/x-www-form-urlencoded");
+        // headers.append("Content-Type", "multipart/form-data");
         return headers
     }
 
     getBody() {
+        // var formdata = new FormData();
+        // for (let key in this.bodyContent) {
+        //     if (this.bodyContent[key] != '') {
+        //         formdata.append(key, this.bodyContent[key]);
+        //     }
+        // }
+        // return formdata;
+        
         let urlencoded = new URLSearchParams();
         for (let key in this.bodyContent) {
-            urlencoded.append(key, this.bodyContent[key]);
+            if (this.bodyContent[key] != '') {
+                urlencoded.append(key, this.bodyContent[key]);
+            }
         }
         return urlencoded;
     }
