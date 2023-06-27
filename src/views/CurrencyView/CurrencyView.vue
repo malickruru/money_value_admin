@@ -17,7 +17,11 @@
 
         <va-data-table class="table-crud" :items="item"
             :columns="[{ key: 'flag' }, { key: 'code', sortable: true }, { key: 'name', sortable: true }, { key: 'symbol' }, { key: 'actions', sortable: true }]"
-            :filter="query" :per-page="perPage" :current-page="currentPage" @filtered="filtered = $event.items" striped>
+            :filter="query"
+            :per-page="perPage" 
+            :current-page="currentPage" 
+            @filtered="filtered = $event.items" 
+            striped>
             <template #cell(flag)="{ value }">
                 <Flag :url="value" />
             </template>
@@ -25,7 +29,7 @@
             <template #cell(actions)="{ rowIndex }">
                 <div class="d-flex">
                     <EditCurrency @update-table="updateTable" :item="item[rowIndex]" />
-                    <DeleteCurrency @update-table="updateTable " :item="item[rowIndex]"  />
+                    <DeleteCurrency @update-table="updateTable" :item="item[rowIndex]" />
 
                 </div>
             </template>
@@ -54,12 +58,12 @@ import DeleteCurrency from './DeleteCurrency.vue';
 
 export default {
     components: {
-    Heading,
-    Flag,
-    AddCurrency,
-    EditCurrency,
-    DeleteCurrency
-},
+        Heading,
+        Flag,
+        AddCurrency,
+        EditCurrency,
+        DeleteCurrency
+    },
 
     data() {
         return {
@@ -71,15 +75,21 @@ export default {
         }
     },
     methods: {
+        // mettre à jour le tableau de devise
         async updateTable() {
             let res = await allCurrencies.getResponse();
             this.item = res.data
-            localStorage.setItem("moneyValueCurrencies", JSON.stringify(res.data))
+            if (res.status == 200) {
+                localStorage.setItem("moneyValueCurrencies", JSON.stringify(res.data))
+            } else {
+                this.$vaToast.init({ message: 'échec lors de la mise à jour des devises', position: 'bottom-right', color: 'danger' })
+            }
         },
 
-        
+
     },
     computed: {
+        // retourne le nombre total de page
         pages() {
             return this.perPage && this.perPage !== 0
                 ? Math.ceil(this.filtered.length / this.perPage)

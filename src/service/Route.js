@@ -1,5 +1,7 @@
 import { Delete, Get, Post,Put } from "./ApiRequest";
 
+// definition des routes , rangées par modèle
+
 // User
 let login = new Post(true, "http://127.0.0.1:8000/api/login")
 let logout = new Get(true, 'http://127.0.0.1:8000/api/logout?email=')

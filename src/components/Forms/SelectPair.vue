@@ -42,6 +42,8 @@ export default {
     emits: ['setFrom', 'setTo'],
     data() {
         return {
+            // si hasDefaultValue est vrai alors les devises auront une valeur par défaut 
+            // lors du montage du composant
             to: this.hasDefaultValue ?'Euro' : '',
             from: this.hasDefaultValue ?  'Franc CFA' :'',
             currencies: JSON.parse(localStorage.getItem('moneyValueCurrencies')),
@@ -49,21 +51,25 @@ export default {
         }
     },
     computed: {
+        // retourne un tableau composé des nom de devise
         codeCurrencies() {
             return this.currencies.map(element => element.name)
         },
 
+        // retourne toutes les monnaies lié a la monnaie source (from) via une pair
         codePairs() {
             let match = this.pairs.filter(element => element.from.name == this.from)
-            // return match
+            // retourne un tableau composé des nom de devise
             return match.map(element => element.to.name)
         },
     },
     watch:{
+        // lorsque la monnaie source change de valeur , changer sa valeur dans le composant parent
         from(newValue){
             this.$emit('setFrom', newValue)
             this.to = ''
         },
+            // lorsque la monnaie cible change de valeur , changer sa valeur dans le composant parent
         to(newValue){
             this.$emit('setTo', newValue)
         }

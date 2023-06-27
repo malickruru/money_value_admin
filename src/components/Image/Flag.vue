@@ -8,6 +8,7 @@ export default {
     },
     computed: {
         link() {
+            //formater l'url de l'image en fonction de sa valeur
             return this.url[0] == "." ? "http://127.0.0.1:8000"+this.url.slice(1) : "http://127.0.0.1:8000"+this.url
              
         }

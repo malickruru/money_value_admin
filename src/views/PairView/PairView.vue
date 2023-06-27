@@ -28,9 +28,8 @@
 
             <template #cell(actions)="{ rowIndex }">
                 <div class="d-flex">
-                    <EditPair @update-table="updateTable" :item="item[rowIndex]" />
-                    <DeletePair @update-table="updateTable" :item="item[rowIndex]"  />
-
+                    <EditPair  @update-table="updateTable" :item="item[rowIndex]" />
+                    <DeletePair  @update-table="updateTable" :item="item[rowIndex]"  />
                 </div>
             </template>
             <template #bodyAppend>
@@ -70,38 +69,48 @@ export default {
     data() {
         return {
             item: JSON.parse(localStorage.getItem('moneyValuePairs')),
-            filtered: JSON.parse(localStorage.getItem('moneyValuePairs')),
+            // filtered: JSON.parse(localStorage.getItem('moneyValuePairs')),
             currentPage: 1,
             perPage: 10
         }
     },
     methods: {
+
         setFrom(v) {
+            // filtrer la tableau par devise cible
             if (v != "") {
                 this.item = JSON.parse(localStorage.getItem('moneyValuePairs')).filter(
                     (e) => e.from.name == v
                 )
-               
             }else{
                 this.item = JSON.parse(localStorage.getItem('moneyValuePairs'))
             } 
         },
         setTo(v) {
+            // filtrer la tableau par devise source
             if (v != "") {
                 this.item = this.item.filter((e) => e.to.name == v
             )
             }
 
         },
+        // mettre à jour le tableau de devise
         async updateTable() {
             let res = await allPairs.getResponse();
             this.item = res.data
-            localStorage.setItem("moneyValuePairs", JSON.stringify(res.data))
+            if (res.status == 200) {
+                localStorage.setItem("moneyValuePairs", JSON.stringify(res.data))
+            } else {
+                this.$vaToast.init({ message: 'échec lors de la mise à jour des devises', position: 'bottom-right', color: 'danger' })
+            }
+
+            
         },
         
         
     },
     computed: {
+        // retourne le nombre total de page
         pages() {
             return this.perPage && this.perPage !== 0
                 ? Math.ceil(this.item.length / this.perPage)

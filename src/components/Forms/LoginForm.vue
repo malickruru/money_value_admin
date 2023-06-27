@@ -28,16 +28,9 @@ export default {
             if (res.status != 200) {
                 this.$vaToast.init({ message: res.message, position: 'bottom-right', color: 'danger' })
             } else {
+                // stocker le token et l'email lorsque la connexion est réussit
                 localStorage.setItem("moneyValueToken", res.data.token);
                 localStorage.setItem("moneyValueEmail", this.email);
-                if (!localStorage.getItem("moneyValueCurrencies")) {
-                    let res = await allCurrencies.getResponse();
-                    localStorage.setItem("moneyValueCurrencies", JSON.stringify(res.data))
-                }
-                if (!localStorage.getItem("moneyValuePairs")) {
-                    let res = await allPairs.getResponse();
-                    localStorage.setItem("moneyValuePairs", JSON.stringify(res.data))
-                }
                 this.$router.push("/admin")
             }
             this.isLoading = false
@@ -47,7 +40,6 @@ export default {
 </script>
 <style >
 .va-h3 {
-
     text-align: center;
 }
 </style>

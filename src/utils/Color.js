@@ -1,3 +1,4 @@
+// générer une couleur àléatoire
 export const randomColor = (alpha) => {
   var red = Math.floor(Math.random() * 256);
   var green = Math.floor(Math.random() * 256);
@@ -6,6 +7,7 @@ export const randomColor = (alpha) => {
   return 'rgba(' + red + ', ' + green + ', ' + blue + ', ' + alpha + ')';
 }
 
+// générer un tableau de couleur àléatoires
 export  function randomColorArray(nombreCouleurs) {
     var tableauCouleurs = [];
   

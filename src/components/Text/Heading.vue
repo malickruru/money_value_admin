@@ -11,6 +11,8 @@ props: {
 },
 
 computed: {
+    // formater la class , 
+    //level correspond a la taille du titre allant de 1 le plus gros à 6
     customClass() {
         return 'va-h'+this.level+' '+this._class
     }

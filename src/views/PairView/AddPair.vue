@@ -54,6 +54,7 @@ export default {
             from : '',
             to : '',
             currencyOption : JSON.parse(localStorage.getItem('moneyValueCurrencies')).map(element => element.name),
+            // dynamicOption represente les options de monnaie qui ne sont pas lié a la devise source
             dynamicOption : [],
             isLoading: false,
         }
@@ -68,12 +69,12 @@ export default {
                 let res = await addPairs.getResponse("", this.data);
                 if (res.status == 200) {
                     this.$emit('updateTable')
-                    this.isLoading = false
-                    this.show = false
                     this.$vaToast.init({ message: res.message, position: 'bottom-right', color: 'success' })
-                    return
+                }else{
+                    this.$vaToast.init({ message: res.message, position: 'bottom-right', color: 'danger' })
                 }
-                this.$vaToast.init({ message: "une erreur c'est produite", position: 'bottom-right', color: 'danger' })
+                this.isLoading = false
+                this.show = false
 
             } else {
                 this.$vaToast.init({ message: "Remplissez tous les champs svp", position: 'bottom-right', color: 'danger' })
@@ -81,11 +82,18 @@ export default {
         },
     },
     watch: {
+        // a chaque fois que la devise source (from) change de value ,
+        // retourner toute les devise n'etant pas lié a celle ci
         from(newValue, oldValue) {
+            // récupérer le code de la devise source
             this.data.from = this.getCurrencyByName(newValue).code
+            // récupérer le nom des devise lié à la devise source
             let match = JSON.parse(localStorage.getItem('moneyValuePairs')).filter(element => element.from.name == newValue);
             let matchObject = match.map((e) => e.to.name)
+
+            // les devise non-lié à la devise source sont récupéré dans le tableau unpairs
             let unPairs = JSON.parse(localStorage.getItem('moneyValueCurrencies')).filter(element => !matchObject.includes(element.name) && element.name != newValue )
+            // récupérer le nom de ces devises
             this.dynamicOption = unPairs.map(element => element.name)
         },
         to(newValue, oldValue){

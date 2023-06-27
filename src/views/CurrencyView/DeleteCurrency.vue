@@ -43,14 +43,12 @@ export default {
                 let res = await deleteCurrency.getResponse(this.item.code);
                 if (res.status == 200) {
                     this.$emit('updateTable')
-                    this.isLoading = false
-                    this.show = false
                     this.$vaToast.init({ message: res.message, position: 'bottom-right', color: 'success' })
                 }else{
-                    this.isLoading = false
-                    this.show = false
-                    this.$vaToast.init({ message: "une erreur s'est produite", position: 'bottom-right', color: 'danger' })
+                    this.$vaToast.init({ message: res.message, position: 'bottom-right', color: 'danger' })
                 }
+                this.isLoading = false
+                this.show = false
         }
     },
    

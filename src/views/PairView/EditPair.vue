@@ -40,6 +40,7 @@ export default {
             isLoading: false,
             error : false
         }
+
     },
     methods: {
         async submit() {
@@ -48,17 +49,21 @@ export default {
                 let res = await updatePairs.getResponse(this.item.id, this.data);
                 if (res.status == 200) {
                     this.$emit('updateTable')
-                    this.isLoading = false
-                    this.show = false
                     this.$vaToast.init({ message: res.message, position: 'bottom-right', color: 'success' })
-                    return
+                }else{
+                    this.$vaToast.init({ message: res.message, position: 'bottom-right', color: 'danger' })
                 }
-                this.$vaToast.init({ message: "une erreur c'est produite", position: 'bottom-right', color: 'danger' })
-
+                this.isLoading = false
+                this.show = false
             } else {
                 this.$vaToast.init({ message: "Remplissez tous les champs svp", position: 'bottom-right', color: 'danger' })
             }
         },
+    },
+    watch:{
+        show(){
+            this.data.change_rate = this.item.change_rate
+        }
     }
 }
 </script>

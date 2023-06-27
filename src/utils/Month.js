@@ -1,5 +1,6 @@
 
-
+//  formate la date et retourne une date en francais
+// ex : getMonth('02-2023') = 'février 2023'
 export const getMonth = (date) => {
 
     const month = {

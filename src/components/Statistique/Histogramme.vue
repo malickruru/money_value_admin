@@ -2,17 +2,9 @@
   <div class="pa-5">
     <Bar v-if="loaded" :data="chartData" :options="config" />
     <VaSkeleton v-else variant="squared" height="15rem" animation="wave" />
-    <va-pagination
-    v-show="pages"
-    v-model="currentPage"
-    :pages="pages"
-    :visible-pages="3"
-    buttons-preset="default"
-    gapped
-    class="ma-4 flex-center"
-  />
+    <va-pagination v-show="pages" v-model="currentPage" :pages="pages" :visible-pages="3" buttons-preset="default" gapped
+      class="ma-4 flex-center" />
   </div>
-
 </template>
   
 <script>
@@ -20,7 +12,7 @@ import { Bar } from 'vue-chartjs'
 import { conversionSum } from '../../service/Route'
 import { getPairId, getPair } from '../../utils/Data';
 import { Chart as ChartJS, Title, Tooltip, Legend, BarElement, CategoryScale, LinearScale } from 'chart.js'
-import {randomColorArray} from '../../utils/Color'
+import { randomColorArray } from '../../utils/Color'
 ChartJS.register(Title, Tooltip, Legend, BarElement, CategoryScale, LinearScale)
 
 export default {
@@ -32,7 +24,7 @@ export default {
     config: {
       indexAxis: 'y',
       responsive: true,
-      
+
       plugins: {
         legend: {
           display: false
@@ -40,6 +32,7 @@ export default {
         tooltip: {
           callbacks: {
             label: function (context) {
+              // création de tooltip personnalisés en fonction de la paire survolée
               let pair = getPair(
                 getPairId(
                   context.label.split(' - ')[0],
@@ -53,9 +46,10 @@ export default {
       }
     },
     currentPage: 1,
-    pages:0
+    pages: 0
   }),
   mounted() {
+    // charger les données lorsque le composant est monté
     this.getSum();
   },
 
@@ -63,10 +57,15 @@ export default {
     async getSum() {
       this.loaded = false
       let res = await conversionSum.getResponse(this.currentPage)
+      if (res.status != 200) {
+        this.$vaToast.init({ message: res.message, position: 'bottom-right', color: 'danger' })
+        return
+      }
       this.getChart(res.data)
       this.pages = res.data.total_page
       this.loaded = true
     },
+    // changer la configuration du graphe
     getChart(obj) {
       let colors = randomColorArray(10)
       this.chartData = {
@@ -82,6 +81,7 @@ export default {
     }
   },
   watch: {
+    // lorsque la page change , mettre a jour les données
     currentPage(newValue, oldValue) {
       this.getSum();
     }

@@ -10,7 +10,7 @@
             </template>
             <template #right>
                 <va-navbar-item class="navbar-item-slot">
-                    <va-icon name="logout" color="danger" @click="logoutMethod" />
+                    <va-icon name="logout" color="danger" title="Déconnexion" @click="logoutMethod" />
                 </va-navbar-item>
             </template>
 
@@ -73,10 +73,12 @@ export default {
     },
 
     methods: {
+        // connaitre le l'url actelle
         isActive(link) {
             return link == window.location.pathname
         },
 
+        //action de déconnexion
         async logoutMethod() {
             await logout.getResponse(localStorage.getItem('moneyValueEmail'))
             this.$router.push('/login')

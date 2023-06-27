@@ -8,6 +8,7 @@ const router = createRouter({
       path: '/admin',
       name: 'admin',
       component: import('../views/Layout.vue'),
+      // verifier si l'utilisateur est connecté avant d'accéder a une route de l'interface admin
       beforeEnter: (to, from, next) => {
         if (!localStorage.getItem('moneyValueToken')) {
           router.push("/login")
@@ -48,13 +49,18 @@ const router = createRouter({
 
 })
 
+
+// toutes les pages de l'application on besoin des monnaies 
+// et des pair de monnaie pour fonctionner .
+// ici beforeEach vérifie si elles sont présente dans le localStorage 
+// sinon elle les récupère via un fetch
 router.beforeEach( async (to, from, next) => {
-  if (!localStorage.getItem("moneyValueCurrencies")) {
+  if (!localStorage.getItem("moneyValueCurrencies") ) {
     let res = await allCurrencies.getResponse();
     localStorage.setItem("moneyValueCurrencies", JSON.stringify(res.data))
   }
 
-  if (!localStorage.getItem("moneyValuePairs")) {
+  if (!localStorage.getItem("moneyValuePairs") ) {
     let res = await allPairs.getResponse();
     localStorage.setItem("moneyValuePairs", JSON.stringify(res.data))
   }

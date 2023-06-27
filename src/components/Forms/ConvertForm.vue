@@ -12,7 +12,7 @@
                 </va-input>
 
                 <SelectPair @setFrom="setFrom" @setTo="setTo" :hasDefaultValue="true" />
-                <!--  -->
+
             </div>
             <div class="row">
                 <VaSkeletonGroup v-if="isLoading" animation="wave" :delay="0" style="flex : 1"
@@ -61,7 +61,7 @@ export default {
             result: ''
         }
     },
-    
+
 
     methods: {
         setFrom(v) {
@@ -86,11 +86,19 @@ export default {
                     this.getCurrencyByName(this.to).code
                 )
             })
-            // this.result = res.data.result
-            this.isLoading = false
-            this.operation = `${this.amount} ${this.getCurrencyByName(this.from).symbol} =`
-            this.result = `${res.data.result} ${this.getCurrencyByName(this.to).symbol} `
+            if (res.status != 200) {
+                this.$vaToast.init({ message: res.message, position: 'bottom-right', color: 'danger' })
+            } else {
 
+                // new Intl.NumberFormat('de-DE').format(res.data.result) pour afficher 
+                // le résultat au format monétaire avec
+                //  la virgule comme séparateur décimal
+                // et un point pour indiquer les milliers
+
+                this.operation = `${this.amount} ${this.getCurrencyByName(this.from).symbol} =`
+                this.result = `${new Intl.NumberFormat('de-DE').format(res.data.result)} ${this.getCurrencyByName(this.to).symbol} `
+            }
+            this.isLoading = false
         }
     },
 }
